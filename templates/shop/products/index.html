@@ -1,0 +1,39 @@
+{% extends "_shared/base.html" %}
+
+{% block content %}
+
+    <h1 class="page-header">Products</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 index-product">
+                <a href="{%  url 'shop:detail' product.id %}"><img src="{{ product.image.url }}" style="width: 100%"><a/>
+                <h3><a href="{%  url 'shop:detail' product.id %}">{{ product.name }}</a><span class="index-product-price pull-right">$ {{ product.current_price }}</span></h3>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+    <nav>
+        <ul class="pagination">
+            {% if products.has_previous %}
+                <li><a href="?page={{ products.previous_page_number }}" aria-label="Previous"><span aria-hidden="true"></span>&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+
+            {% for page in products.paginator.page_range %}
+                {% if page == products.number  %}
+                    <li class="active"><a href="?page={{ page }}">{{ page }} <span class="sr-only"> </span></a></li>
+                {% else %}
+                    <li><a href="?page={{ page }}">{{ page }} <span class="sr-only"> </span></a></li>
+                {%  endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+                <li><a href="?page={{ products.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+            {% else %}
+                <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

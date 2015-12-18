@@ -1,0 +1,54 @@
+{% extends "_shared/base.html" %}
+{% load add_css %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-7">
+            <img class="detail" src="{{ product.image.url }}">
+        </div>
+        <div class="col-md-5">
+            <h1>{{ product.name }}</h1>
+            <h3>$ {{ product.current_price }}</h3>
+            <br>
+            <p>{{ product.description }}</p>
+            <form action="" method="post">
+                {% csrf_token %}
+
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                <div class="row">
+                    <div class="col-md-6">
+                        {% for field in form.visible_fields %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field|add_css:"form-control" }}
+                                {{ field.errors.as_text }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+                <input type="submit" class="btn btn-success" value="Buy Shoe" />
+            </form>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+        $('img.detail')
+            .wrap('<span style="display:inline-block"></span>')
+            .css('display', 'block')
+            .parent()
+            .zoom();
+        });
+    </script>
+{% endblock %}

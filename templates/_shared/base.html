@@ -1,0 +1,129 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{%  static 'css/base.css' %}">
+
+
+    <title></title>
+</head>
+<body>
+
+
+    {# navbar #}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'shop:index' %}"><img src="{% static 'images/shared/logo.png' %}"></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{% url 'shop:index' %}">Shoes</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.first_name }} {{ user.last_name }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'accounts:history' %}">Order History</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{% url 'accounts:logout' %}">Sign Out</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="dropdown" id="menuLogin"><a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login / Register <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form class="form" role="form" method="post" action="{% url 'accounts:login' %}" accept-charset="UTF-8" id="login-nav">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label class="sr-only" for="email">Email address</label>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="sr-only" for="password">Password</label>
+                                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="">
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="remember_me"> Remember me
+                                                </label>
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-block">Login</button>
+                                            <li class="divider"></li>
+                                            Don't have a login? <a href="{%  url 'accounts:register' %}">Register now.</a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+
+
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    {# /navbar #}
+
+    {# breadcrumbs #}
+    {% block breadcrumbs %}
+    {% endblock %}
+    {# /breadcrumbs #}
+
+
+    <div class="container">
+        {# messages #}
+        {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {# /messages #}
+
+        {# content #}
+        {% block content %}
+            <strong>Oops!</strong> Looks like there's nothing to see here.
+        {% endblock %}
+        {# /content #}
+    </div>
+
+
+    {# footer #}
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">SeventeenShirts.com &copy; 2015</p>
+        </div>
+    </footer>
+    {# /footer #}
+
+
+
+    {# js #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    {# /js #}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

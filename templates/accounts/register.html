@@ -1,0 +1,31 @@
+{% extends "_shared/base.html" %}
+{% load add_css %}
+
+{% block content %}
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <h1 class="page-header">Register</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <form action="" method="post">
+                {% csrf_token %}
+
+                {% for hidden_field in user_form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% for field in user_form.visible_fields %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field|add_css:"form-control" }}
+                        {{ field.errors.as_text }}
+                    </div>
+                {% endfor %}
+
+                <input type="submit" class="btn btn-primary" value="Register" />
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

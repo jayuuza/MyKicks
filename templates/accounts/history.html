@@ -1,0 +1,65 @@
+{% extends "_shared/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+    <h1 class="page-header">{{ page_title }}</h1>
+    {% if orders %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <th></th>
+                    <th>Purchased</th>
+                    <th>Product</th>
+                    <th>Size</th>
+                    <th>Cost</th>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.create_date|naturaltime }}</td>
+                            <td><a href="{% url 'shop:detail' order.product.id %}" target="_blank">{{ order.product }}</a></td>
+                            <td>{{ order.size }}</td>
+                            <td>{{ order.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination">
+                {% if orders.has_previous %}
+                    <li><a href="?page={{ orders.previous_page_number }}" aria-label="Previous"><span aria-hidden="true"></span>&laquo;</a></li>
+                {% else %}
+                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                {% endif %}
+
+                {% for page in orders.paginator.page_range %}
+                    {% if page == orders.number  %}
+                        <li class="active"><a href="?page={{ page }}">{{ page }} <span class="sr-only"> </span></a></li>
+                    {% else %}
+                        <li><a href="?page={{ page }}">{{ page }} <span class="sr-only"> </span></a></li>
+                    {%  endif %}
+                {% endfor %}
+
+                {% if orders.has_next %}
+                    <li><a href="?page={{ orders.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                {% else %}
+                    <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <div class="row">
+            <div class="col-sm-12">
+                <p>You don't <em>have</em> any orders yet.</p>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
